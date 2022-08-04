@@ -18,7 +18,7 @@ function App() {
   const collectionContext = useContext(CollectionContext)
 
   useEffect(() => {
-    collectionContext?.syncLocalStorage()
+    if (collectionContext) collectionContext?.syncLocalStorage()
   }, [])
 
   return (
