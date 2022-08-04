@@ -19,7 +19,7 @@ export function AnimeProvider(props: { children: React.ReactNode }) {
   }
 
   const unselectAnime = (anime: Anime) => {
-    let filtered = selectedAnime.filter((cur) => cur.idMal != anime.idMal)
+    let filtered = selectedAnime.filter((cur) => cur.idMal !== anime.idMal)
     setSelectedAnime(filtered)
   }
 

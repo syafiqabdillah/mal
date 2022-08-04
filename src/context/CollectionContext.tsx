@@ -1,4 +1,5 @@
 import React, { createContext, useState } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 
 import { Anime } from '../Types/Anime'
 import { Collection } from '../Types/Collection'
@@ -6,7 +7,11 @@ import { Collection } from '../Types/Collection'
 type CollectionContextType = {
   collections: Collection[]
   selectedCollections: Collection[]
+  selectedCollection: Collection | null
+  selectOneCollection: (col: Collection | null) => void
   addCollection: (name: string, slug: string) => void
+  removeCollection: (collection: Collection) => void
+  editCollection: (collection: Collection) => void
   syncLocalStorage: () => void
   selectCollection: (col: Collection) => void
   unselectCollection: (col: Collection) => void
@@ -15,35 +20,48 @@ type CollectionContextType = {
 
 const CollectionContext = createContext<CollectionContextType | null>(null)
 
-function saveToLocalStorage(key: string, value: any): void {
-  localStorage.setItem(key, JSON.stringify(value))
-}
-
 export function CollectionProvider(props: { children: React.ReactNode }) {
-  const [collections, setCollections] = useState<Collection[]>([
-    {
-      name: 'Slice of Life',
-      slug: 'slice-of-life',
-      list: [],
-    },
-  ])
+  const [collections, setCollections] = useState<Collection[]>([])
   const [selectedCollections, setSelectedCollections] = useState<Collection[]>(
     []
   )
+  const [selectedCollection, setSelectedCollection] =
+    useState<Collection | null>(null)
+
+  function saveToLocalStorage(colls: Collection[]): void {
+    localStorage.setItem('collections', JSON.stringify(colls))
+  }
 
   const selectCollection = (col: Collection) => {
     setSelectedCollections((prev) => [...prev, col])
   }
 
+  const selectOneCollection = (col: Collection | null) => {
+    setSelectedCollection(col)
+  }
+
   const unselectCollection = (col: Collection) => {
-    let filtered = selectedCollections.filter((item) => item.slug != col.slug)
+    let filtered = selectedCollections.filter((item) => item.slug !== col.slug)
     setSelectedCollections(filtered)
   }
 
   const addCollection = (name: string, slug: string) => {
-    let newCollection = [...collections, { name, slug, list: [] }]
+    let newCollection = [...collections, { name, slug, list: [], id: uuidv4() }]
     setCollections(newCollection)
-    saveToLocalStorage('collections', newCollection)
+    saveToLocalStorage(newCollection)
+  }
+
+  const removeCollection = (col: Collection) => {
+    let filtered = collections.filter((item) => item.id !== col.id)
+    setCollections(filtered)
+    saveToLocalStorage(filtered)
+  }
+
+  const editCollection = (col: Collection) => {
+    let filtered = collections.filter((item) => item.id !== col.id)
+    let newCollections = [...filtered, col]
+    setCollections(newCollections)
+    saveToLocalStorage(newCollections)
   }
 
   const bulkAdd = (animeList: Anime[]) => {
@@ -66,7 +84,7 @@ export function CollectionProvider(props: { children: React.ReactNode }) {
     const newCollections = [...affectedCollections, ...unaffectedCollections]
     setCollections(newCollections)
     setSelectedCollections([])
-    saveToLocalStorage('collections', newCollections)
+    saveToLocalStorage(newCollections)
   }
 
   const syncLocalStorage = () => {
@@ -82,7 +100,11 @@ export function CollectionProvider(props: { children: React.ReactNode }) {
       value={{
         collections,
         selectedCollections,
+        selectedCollection,
+        selectOneCollection,
         addCollection,
+        removeCollection,
+        editCollection,
         syncLocalStorage,
         selectCollection,
         unselectCollection,

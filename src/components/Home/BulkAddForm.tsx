@@ -29,6 +29,7 @@ const Title = styled.h4`
 
 const ListCollection = styled.div`
   display: flex;
+  flex-wrap: wrap;
   margin-top: 15px;
   gap: 5px;
 `
@@ -46,6 +47,7 @@ const CollectionItem = styled.div`
 
 const InputContainer = styled.div`
   margin-top: 5px;
+  margin-bottom: 25px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -59,12 +61,15 @@ const InputTop = styled.div`
 
 const Input = styled.input`
   border: 1px solid var(--bg-dark);
+  background-color: transparent;
   padding: 0.25em 0.5em;
   border-radius: 4px;
   font-size: 14px;
   height: 30px;
   width: 150px;
 `
+
+const PlusImg = styled(FaPlus)``
 
 const ErrorMessage = styled.small`
   display: block;
@@ -73,7 +78,6 @@ const ErrorMessage = styled.small`
 `
 
 const ButtonSubmit = styled(DarkButton)`
-  margin-top: 20px;
   width: 100%;
 `
 
@@ -96,7 +100,7 @@ function BulkAddForm() {
     let colNames = collectionContext?.collections.map((col) => col.name)
     let colSlug = collectionContext?.collections.map((col) => col.slug)
     return (
-      newColName != '' &&
+      newColName !== '' &&
       !colNames?.includes(newColName) &&
       !colSlug?.includes(getSlug(newColName)) &&
       !/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(newColName)
@@ -181,22 +185,27 @@ function BulkAddForm() {
         <InputTop>
           <Input
             type="text"
-            placeholder="Add Collection"
+            placeholder="Add New Collection"
             value={newColName}
             onChange={(e) => setNewColName(e.target.value)}
+            onKeyDown={(e) =>
+              e.key === 'Enter' ? onClickAddCollection() : null
+            }
           />
           {isNewColNameValid() && (
-            <FaPlus
+            <PlusImg
               style={{ height: '100%' }}
               onClick={() => onClickAddCollection()}
             />
           )}
         </InputTop>
-        {newColName != '' && !isNewColNameValid() && (
+        {newColName !== '' && !isNewColNameValid() && (
           <ErrorMessage>collection name must be unique</ErrorMessage>
         )}
       </InputContainer>
-      <ButtonSubmit onClick={onClickSubmit}>SUBMIT</ButtonSubmit>
+      {isFormValid() && (
+        <ButtonSubmit onClick={onClickSubmit}>SUBMIT</ButtonSubmit>
+      )}
       <ButtonCancel onClick={onClickCancel}>Cancel</ButtonCancel>
     </Container>
   )

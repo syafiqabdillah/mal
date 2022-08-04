@@ -1,14 +1,23 @@
-import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useContext, useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import styled from '@emotion/styled'
 import { FaChevronLeft } from 'react-icons/fa'
 
 import Banner from './Banner'
+import Button from '../Button'
+
+import { getTitle } from '../../utils/anime'
 
 import { Anime } from '../../Types/Anime'
+
 import { GET_MEDIA_DETAIL } from '../../GraphQL/queries'
-import { getTitle } from '../../utils/anime'
+
+import BulkAddForm from '../Home/BulkAddForm'
+
+import AnimeContext from '../../context/AnimeContext'
+import CollectionContext from '../../context/CollectionContext'
+import { Collection } from '../../Types/Collection'
 
 const Container = styled.div`
   min-height: 100vh;
@@ -32,6 +41,7 @@ const Cover = styled.img`
 const Detail = styled.div`
   padding: 1em;
   margin-top: 20px;
+  margin-bottom: 100px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -51,10 +61,28 @@ const Title = styled.h1`
 
 const Description = styled.p`
   line-height: 1.6;
+  margin: 20px 0;
+`
+
+const CollectionInfo = styled.p`
+  margin: 0;
+  font-style: italic;
+`
+
+const AddToCollectionButton = styled(Button)`
+  margin-top: 20px;
+`
+
+const CollectionItem = styled(Link)`
+  color: var(--bg-light);
+  margin-left: 10px;
 `
 
 function AnimeDetail() {
   let { id } = useParams()
+  const animeContext = useContext(AnimeContext)
+  const collectionContext = useContext(CollectionContext)
+
   const [anime, setAnime] = useState<Anime>()
   const [loadingAnime, setLoadingAnime] = useState(true)
 
@@ -85,6 +113,22 @@ function AnimeDetail() {
     return anime.coverImage.large
   }
 
+  function onClickAddToCollection() {
+    if (anime) {
+      animeContext?.selectAnime(anime)
+    }
+  }
+
+  function getRelatedCollections(): Collection[] {
+    let cols: Collection[] = []
+    collectionContext?.collections.forEach((col) => {
+      col.list.forEach((item) => {
+        if (anime?.idMal === item.idMal) cols.push(col)
+      })
+    })
+    return cols
+  }
+
   return (
     <Container>
       <Banner src={getBannerImage()} alt={getTitle(anime)} />
@@ -97,6 +141,18 @@ function AnimeDetail() {
         <Description
           dangerouslySetInnerHTML={{ __html: anime.description }}
         ></Description>
+        <CollectionInfo>
+          Collections:
+          {getRelatedCollections().map((col) => (
+            <CollectionItem key={col.slug} to={`/collection/${col.slug}`}>
+              {col.name}
+            </CollectionItem>
+          ))}
+        </CollectionInfo>
+        <AddToCollectionButton onClick={() => onClickAddToCollection()}>
+          Add to Collection
+        </AddToCollectionButton>
+        <BulkAddForm />
       </Detail>
     </Container>
   )
