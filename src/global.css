@@ -1,3 +1,11 @@
+:root {
+  --bg-dark: #334257;
+  --bg-light: #eeeeee;
+  --bg-grey: #476072;
+  --max-w-mobile: 500px;
+  --max-w-mobile: 700px;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,9 +13,17 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-dark);
+  color: var(--bg-light);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }

@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useContext, useEffect } from 'react'
+import { Routes, Route } from 'react-router-dom'
+import styled from '@emotion/styled'
+
+import AnimeDetail from './components/AnimeDetail'
+import Collections from './components/Collections'
+import CollectionDetail from './components/CollectionDetail'
+import Home from './components/Home'
+import Navbar from './components/Navbar'
+
+import CollectionContext from './context/CollectionContext'
+
+const Container = styled.div`
+  position: relative;
+`
 
 function App() {
+  const collectionContext = useContext(CollectionContext)
+
+  useEffect(() => {
+    collectionContext?.syncLocalStorage()
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Container>
+      <Routes>
+        <Route path="" element={<Home />} />
+        <Route path="/anime/:id" element={<AnimeDetail />} />
+        <Route path="/collections" element={<Collections />} />
+        <Route path="/collection/:slug" element={<CollectionDetail />} />
+      </Routes>
+      <Navbar />
+    </Container>
+  )
 }
 
-export default App;
+export default App
