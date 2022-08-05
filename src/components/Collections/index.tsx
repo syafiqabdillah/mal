@@ -205,6 +205,7 @@ function Collections() {
   }
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     setShowModalRemove(false)
     setToBeRemovedCollection(null)
     getBannerImage()

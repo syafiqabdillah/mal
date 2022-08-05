@@ -93,6 +93,10 @@ function AnimeDetail() {
   })
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  useEffect(() => {
     if (data) {
       setAnime(data.Media)
       setLoadingAnime(false)
