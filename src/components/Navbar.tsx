@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from '@emotion/styled'
 import { Link } from 'react-router-dom'
 import { FaHome } from 'react-icons/fa'
@@ -25,7 +24,7 @@ const NavbarItemContainer = styled(Link)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 2px;
 
   & > svg {
     font-size: 1.3em;
@@ -41,7 +40,7 @@ function Navbar() {
       </NavbarItemContainer>
       <NavbarItemContainer to={'/collections'}>
         <BsFillCollectionFill />
-        <div>My Collections</div>
+        <div>Collections</div>
       </NavbarItemContainer>
     </NavbarContainer>
   )

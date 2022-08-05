@@ -22,7 +22,7 @@ import { Collection } from '../../Types/Collection'
 const Container = styled.div`
   min-height: 100vh;
   max-width: 700px;
-  margin: 0 auto;
+  margin: 0 auto 100px;
   position: relative;
 `
 

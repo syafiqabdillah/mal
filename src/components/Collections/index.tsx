@@ -4,6 +4,8 @@ import { FaPlus, FaTrashAlt, FaPen } from 'react-icons/fa'
 import { Link, useNavigate } from 'react-router-dom'
 
 import ModalAddCollection from './ModalAddCollection'
+import ModalEditCollection from './ModalEditCollection'
+import ModalRemoveCollection from './ModalRemoveCollection'
 
 import BannerImg from '../BannerImg'
 import Button from '../Button'
@@ -11,16 +13,15 @@ import Container from '../Container'
 import Content from '../Content'
 
 import CollectionContext from '../../context/CollectionContext'
+
 import { Collection } from '../../Types/Collection'
-import ModalRemoveCollection from './ModalRemoveCollection'
-import ModalEditCollection from './ModalEditCollection'
 
 const CollectionList = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   margin-top: 20px;
-  gap: 10px;
+  gap: 5px;
 `
 
 const CollItem = styled.div`
@@ -38,7 +39,7 @@ const CollItem = styled.div`
 
 const Image = styled.img`
   width: 150px;
-  height: auto;
+  height: 100%;
   object-fit: cover;
 `
 
@@ -85,6 +86,18 @@ const EditButtonContainer = styled.div`
   cursor: pointer;
 `
 
+const EmptyState = styled.div`
+  width: 250px;
+  height: 300px;
+  margin: 0 auto;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+`
+
 function getImage(col: Collection) {
   let image = '/images/yurucamp.jpg'
   if (col.list.length == 0) return image
@@ -99,7 +112,10 @@ function getImage(col: Collection) {
 
 function AddButton(props: { onClick: () => void }) {
   return (
-    <Button style={{ marginLeft: 'auto' }} onClick={props.onClick}>
+    <Button
+      style={{ marginLeft: 'auto', marginTop: '20px' }}
+      onClick={props.onClick}
+    >
       <span>
         <FaPlus />
       </span>
@@ -207,6 +223,9 @@ function Collections() {
       {showModalEdit && <ModalEditCollection toggleModal={toggleModalEdit} />}
       <Content>
         <AddButton onClick={toggleModalAdd} />
+        {collectionContext?.collections.length === 0 && (
+          <EmptyState>No collections</EmptyState>
+        )}
         <CollectionList>
           {collectionContext?.collections.map((collection) => (
             <CollItem

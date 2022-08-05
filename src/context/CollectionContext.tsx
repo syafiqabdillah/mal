@@ -16,6 +16,7 @@ type CollectionContextType = {
   selectCollection: (col: Collection) => void
   unselectCollection: (col: Collection) => void
   bulkAdd: (animeList: Anime[]) => void
+  removeAnimeFromCollection: (anime: Anime, collection: Collection) => void
 }
 
 const CollectionContext = createContext<CollectionContextType | null>(null)
@@ -87,6 +88,19 @@ export function CollectionProvider(props: { children: React.ReactNode }) {
     saveToLocalStorage(newCollections)
   }
 
+  const removeAnimeFromCollection = (anime: Anime, collection: Collection) => {
+    const otherCollections = collections.filter(
+      (item) => item.id != collection.id
+    )
+    const filterredAnimeList = collection.list.filter(
+      (item) => item.idMal != anime.idMal
+    )
+    const updatedCollection = Object.assign(collection, {
+      list: filterredAnimeList,
+    })
+    setCollections([...otherCollections, updatedCollection])
+  }
+
   const syncLocalStorage = () => {
     const scollections = localStorage.getItem('collections')
     if (scollections) {
@@ -109,6 +123,7 @@ export function CollectionProvider(props: { children: React.ReactNode }) {
         selectCollection,
         unselectCollection,
         bulkAdd,
+        removeAnimeFromCollection,
       }}
     >
       {props.children}

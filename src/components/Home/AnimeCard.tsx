@@ -23,7 +23,7 @@ const Container = styled(Link)`
   flex-direction: column;
   height: 240px;
   width: 100%;
-  max-width: 170px;
+  /* max-width: 170px; */
   overflow: hidden;
   cursor: pointer;
   text-decoration: none;
@@ -147,8 +147,7 @@ function AnimeCard(props: AnimeCardTypes) {
   }
 
   function onClickRemove() {
-    console.log('remove', props.anime.idMal)
-    alert(`soon: remove ${props.anime.idMal.toString()} from ${slug}`)
+    animeContext?.selectToBeRemovedAnime(props.anime)
   }
 
   function RemoveButton(props: { onClick: () => void }) {

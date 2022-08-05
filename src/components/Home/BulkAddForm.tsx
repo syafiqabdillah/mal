@@ -56,7 +56,7 @@ const InputContainer = styled.div`
 
 const AddNewMessage = styled.div`
   font-size: 12px;
-  margin-top: 10px;
+  margin-top: 5px;
 `
 
 const InputTop = styled.div`
@@ -97,15 +97,27 @@ function BulkAddForm() {
   const collectionContext = useContext(CollectionContext)
 
   const [newColName, setNewColName] = useState('')
+  const [collectionMessage, setCollectionMessage] = useState(
+    'No suitable collections? make a new one below'
+  )
 
   useEffect(() => {
     function unsellectAll(): void {
       if (!animeContext) return
       animeContext.unselectAllAnime()
     }
-
     unsellectAll()
   }, [])
+
+  useEffect(() => {
+    if (collectionContext?.collections.length === 0) {
+      setCollectionMessage(
+        "You have no collections. Don't worry, you can make a new one below."
+      )
+    } else {
+      setCollectionMessage('No suitable collections? make a new one below')
+    }
+  }, [collectionContext?.collections])
 
   function isNewColNameValid() {
     let colNames = collectionContext?.collections.map((col) => col.name)
@@ -180,28 +192,28 @@ function BulkAddForm() {
         Add {animeContext?.selectedAnime.length} selected titles into these{' '}
         {collectionContext?.selectedCollections.length} collections
       </Title>
-      <ListCollection>
-        {collectionContext?.collections.map((col) => (
-          <CollectionItem
-            key={col.slug}
-            style={
-              isSelectedCol(col)
-                ? {
-                    backgroundColor: 'var(--bg-grey)',
-                    color: 'var(--bg-light)',
-                  }
-                : {}
-            }
-            onClick={() => onClickCollection(col)}
-          >
-            {col.name}
-          </CollectionItem>
-        ))}
-      </ListCollection>
+      {collectionContext && collectionContext?.collections.length > 0 && (
+        <ListCollection>
+          {collectionContext?.collections.map((col) => (
+            <CollectionItem
+              key={col.slug}
+              style={
+                isSelectedCol(col)
+                  ? {
+                      backgroundColor: 'var(--bg-grey)',
+                      color: 'var(--bg-light)',
+                    }
+                  : {}
+              }
+              onClick={() => onClickCollection(col)}
+            >
+              {col.name}
+            </CollectionItem>
+          ))}
+        </ListCollection>
+      )}
       <InputContainer>
-        <AddNewMessage>
-          No suitable collections? make a new one below
-        </AddNewMessage>
+        <AddNewMessage>{collectionMessage}</AddNewMessage>
         <InputTop>
           <Input
             type="text"

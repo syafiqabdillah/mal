@@ -53,6 +53,7 @@ function Home() {
   }
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     if (data) {
       setList(data.Page.media)
       setLoadingList(false)
