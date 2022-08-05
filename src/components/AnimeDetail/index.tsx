@@ -1,8 +1,9 @@
 import { useContext, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
-import styled from '@emotion/styled'
 import { FaChevronLeft } from 'react-icons/fa'
+import { Helmet } from 'react-helmet'
+import styled from '@emotion/styled'
 
 import Banner from './Banner'
 import Button from '../Button'
@@ -135,6 +136,9 @@ function AnimeDetail() {
 
   return (
     <Container>
+      <Helmet>
+        <title>{getTitle(anime)}</title>
+      </Helmet>
       <Banner src={getBannerImage()} alt={getTitle(anime)} />
       <Cover src={getCoverImage()} alt={`cover ${anime.title.english}`} />
       <Detail>

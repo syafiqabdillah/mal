@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from '@emotion/styled'
+import { Helmet } from 'react-helmet'
 
 import ModalRemoveAnime from './ModalRemoveAnime'
 
@@ -84,6 +85,9 @@ function CollectionDetail() {
     <Container>
       {collection && (
         <React.Fragment>
+          <Helmet>
+            <title>Collection | {collection.name}</title>
+          </Helmet>
           <BannerImg src={bannerImage} text={collection.name} />
           <Content style={{ paddingTop: '15px' }}>
             <Back />

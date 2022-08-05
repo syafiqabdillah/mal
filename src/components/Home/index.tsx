@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import styled from '@emotion/styled'
 import * as qs from 'query-string'
+import { Helmet } from 'react-helmet'
 
 import AnimeList from './AnimeList'
 import BulkAddForm from './BulkAddForm'
@@ -63,6 +64,10 @@ function Home() {
 
   return (
     <Container>
+      <Helmet>
+        <title>(not) My Anime List</title>
+        <meta name="description" content="My list is way superior than yours" />
+      </Helmet>
       {list.length > 0 && (
         <BannerImg src={getBannerImage()} alt="Banner" text="My Anime List" />
       )}

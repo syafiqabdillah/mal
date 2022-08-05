@@ -1,7 +1,8 @@
 import styled from '@emotion/styled'
 import { useContext, useEffect, useState } from 'react'
 import { FaPlus, FaTrashAlt, FaPen } from 'react-icons/fa'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
 
 import ModalAddCollection from './ModalAddCollection'
 import ModalEditCollection from './ModalEditCollection'
@@ -213,6 +214,9 @@ function Collections() {
 
   return (
     <Container>
+      <Helmet>
+        <title>My Collections</title>
+      </Helmet>
       <BannerImg full src={bannerImage} alt="Banner" text="My Collections" />
       {showModalAdd && <ModalAddCollection toggleModalAdd={toggleModalAdd} />}
       {showModalRemove && (
