@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
-import { DarkButton } from '../Button'
+import Button, { DarkButton } from '../Button'
 
 import CollectionContext from '../../context/CollectionContext'
 
@@ -114,13 +114,21 @@ function ModalEditCollection(props: { toggleModal: () => void }) {
         {isInputError() && (
           <ErrorMessage>Same collection name is not allowed</ErrorMessage>
         )}
-        <DarkButton
-          disabled={isInputError()}
-          style={{ marginTop: '15px', width: '100%' }}
-          onClick={handleSubmit}
-        >
-          Save
-        </DarkButton>
+        <div style={{ display: 'flex' }}>
+          <DarkButton
+            disabled={isInputError()}
+            style={{ marginTop: '15px', width: '100%' }}
+            onClick={handleSubmit}
+          >
+            Save
+          </DarkButton>
+          <Button
+            style={{ width: '100%', marginTop: '10px' }}
+            onClick={() => props.toggleModal()}
+          >
+            Cancel
+          </Button>
+        </div>
       </ModalFormContainer>
     </ModalContainer>
   )

@@ -1,6 +1,8 @@
 import styled from '@emotion/styled'
 import React, { useContext, useEffect, useState } from 'react'
-import { Link, useRoutes } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
+import { FaTrashAlt } from 'react-icons/fa'
+
 import AnimeContext from '../../context/AnimeContext'
 
 import { Anime } from '../../Types/Anime'
@@ -19,9 +21,9 @@ const Container = styled(Link)`
   border-radius: 4px;
   display: flex;
   flex-direction: column;
-  height: 260px;
+  height: 240px;
   width: 100%;
-  max-width: 180px;
+  max-width: 170px;
   overflow: hidden;
   cursor: pointer;
   text-decoration: none;
@@ -55,7 +57,7 @@ const Info = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 43%;
+  height: 50%;
   opacity: 98%;
   padding: 0.5em;
   display: flex;
@@ -90,6 +92,22 @@ const GenreItem = styled.div`
   border-radius: 4px;
 `
 
+const RemoveButtonContainer = styled.div`
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+  gap: 2px;
+
+  padding: 0.25em 0.5em;
+  background-color: var(--bg-light);
+  border-radius: 4px;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+`
+
 function getTitle(title: MediaTitle): string {
   if (title.english) return title.english
   if (title.romaji) return title.romaji
@@ -110,11 +128,10 @@ function getGenre(anime: Anime): string[] {
 
 function AnimeCard(props: AnimeCardTypes) {
   const animeContext = useContext(AnimeContext)
-  const [showCheck, setShowCheck] = useState(false)
+  const { slug } = useParams()
 
-  useEffect(() => {
-    setShowCheck(window.location.pathname === '/')
-  }, [])
+  const [showCheck, setShowCheck] = useState(false)
+  const [showRemove, setShowRemove] = useState(false)
 
   function onClickCheckbox(e: any) {
     e.stopPropagation()
@@ -129,6 +146,30 @@ function AnimeCard(props: AnimeCardTypes) {
     return animeContext?.selectedAnime.includes(props.anime) || false
   }
 
+  function onClickRemove() {
+    console.log('remove', props.anime.idMal)
+    alert(`soon: remove ${props.anime.idMal.toString()} from ${slug}`)
+  }
+
+  function RemoveButton(props: { onClick: () => void }) {
+    return (
+      <RemoveButtonContainer
+        onClick={(e) => {
+          e.stopPropagation()
+          e.preventDefault()
+          props.onClick()
+        }}
+      >
+        <FaTrashAlt /> remove
+      </RemoveButtonContainer>
+    )
+  }
+
+  useEffect(() => {
+    setShowCheck(window.location.pathname === '/')
+    setShowRemove(window.location.pathname !== '/')
+  }, [])
+
   return (
     <Container
       to={`/anime/${props.anime.idMal}`}
@@ -140,14 +181,6 @@ function AnimeCard(props: AnimeCardTypes) {
         height="30"
         width="30"
       />
-      {showCheck && (
-        <Checkbox
-          checked={isChecked()}
-          type={'checkbox'}
-          onChange={(e) => onClickCheckbox(e)}
-          onClick={(e) => e.stopPropagation()}
-        />
-      )}
       <Info>
         <Title>{getTitle(props.anime.title)}</Title>
         <GenreList>
@@ -158,6 +191,15 @@ function AnimeCard(props: AnimeCardTypes) {
           ))}
         </GenreList>
       </Info>
+      {showCheck && (
+        <Checkbox
+          checked={isChecked()}
+          type={'checkbox'}
+          onChange={(e) => onClickCheckbox(e)}
+          onClick={(e) => e.stopPropagation()}
+        />
+      )}
+      {showRemove && <RemoveButton onClick={() => onClickRemove()} />}
     </Container>
   )
 }

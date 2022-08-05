@@ -8,6 +8,7 @@ import AnimeContext from '../../context/AnimeContext'
 import CollectionContext from '../../context/CollectionContext'
 
 import { Collection } from '../../Types/Collection'
+import { collectionNameValid } from '../../utils/anime'
 
 const Container = styled.div`
   position: fixed;
@@ -53,6 +54,11 @@ const InputContainer = styled.div`
   gap: 10px;
 `
 
+const AddNewMessage = styled.div`
+  font-size: 12px;
+  margin-top: 10px;
+`
+
 const InputTop = styled.div`
   display: flex;
   gap: 5px;
@@ -93,7 +99,12 @@ function BulkAddForm() {
   const [newColName, setNewColName] = useState('')
 
   useEffect(() => {
-    animeContext?.unselectAllAnime()
+    function unsellectAll(): void {
+      if (!animeContext) return
+      animeContext.unselectAllAnime()
+    }
+
+    unsellectAll()
   }, [])
 
   function isNewColNameValid() {
@@ -103,7 +114,7 @@ function BulkAddForm() {
       newColName !== '' &&
       !colNames?.includes(newColName) &&
       !colSlug?.includes(getSlug(newColName)) &&
-      !/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(newColName)
+      !/[`!@#$%^&*()_+\-=\]{};':"\\|,.<>?~]/.test(newColName)
     )
   }
 
@@ -114,8 +125,8 @@ function BulkAddForm() {
   function isSelectedCol(col: Collection) {
     return (
       collectionContext?.selectedCollections.filter(
-        (item) => item.slug == col.slug
-      ).length == 1
+        (item) => item.slug === col.slug
+      ).length === 1
     )
   }
 
@@ -125,6 +136,12 @@ function BulkAddForm() {
       collectionContext?.unselectCollection(col)
     } else {
       collectionContext?.selectCollection(col)
+    }
+  }
+
+  function onChangeInput(s: string) {
+    if (s === '' || collectionNameValid(s)) {
+      setNewColName(s)
     }
   }
 
@@ -160,8 +177,8 @@ function BulkAddForm() {
   return (
     <Container>
       <Title>
-        Add {animeContext?.selectedAnime.length} selected titles into these
-        collections
+        Add {animeContext?.selectedAnime.length} selected titles into these{' '}
+        {collectionContext?.selectedCollections.length} collections
       </Title>
       <ListCollection>
         {collectionContext?.collections.map((col) => (
@@ -182,12 +199,15 @@ function BulkAddForm() {
         ))}
       </ListCollection>
       <InputContainer>
+        <AddNewMessage>
+          No suitable collections? make a new one below
+        </AddNewMessage>
         <InputTop>
           <Input
             type="text"
-            placeholder="Add New Collection"
+            placeholder="New collection name"
             value={newColName}
-            onChange={(e) => setNewColName(e.target.value)}
+            onChange={(e) => onChangeInput(e.target.value)}
             onKeyDown={(e) =>
               e.key === 'Enter' ? onClickAddCollection() : null
             }

@@ -5,15 +5,14 @@ import { Anime } from '../../Types/Anime'
 import AnimeCard from './AnimeCard'
 
 const List = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-  justify-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   margin: 0 auto;
+  gap: 5px;
   width: 100%;
 
   @media (min-width: 1000px) {
-    grid-template-columns: repeat(5, 1fr);
   }
 `
 

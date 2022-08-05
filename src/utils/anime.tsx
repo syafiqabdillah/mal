@@ -7,3 +7,7 @@ export function getTitle(anime: Anime): string {
   if (title.native) return title.native
   return '(untitled)'
 }
+
+export function collectionNameValid(s: string) {
+  return !/[`!@#$%^&*()_+\-=\]{};':"\\|,.<>?~]/.test(s)
+}

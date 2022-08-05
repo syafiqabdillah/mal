@@ -38,38 +38,47 @@ const CollItem = styled.div`
 
 const Image = styled.img`
   width: 150px;
-  height: 100%;
+  height: auto;
   object-fit: cover;
 `
 
 const Info = styled.div`
   padding: 0.5em;
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  justify-content: space-between;
   height: 100%;
   font-weight: 600;
   font-size: 20px;
   flex: 1;
 `
 
+const Title = styled.h4`
+  margin: 0;
+`
+
+const Actionables = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`
+
 const RemoveButtonContainer = styled.div`
-  height: 40px;
+  height: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 4px;
-  margin-right: 1em;
   font-size: 12px;
   margin-top: auto;
   cursor: pointer;
 `
 
 const EditButtonContainer = styled.div`
-  height: 40px;
+  height: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   margin-right: 1em;
   font-size: 12px;
   margin-top: auto;
@@ -107,7 +116,7 @@ function EditButton(props: { onClick: () => void }) {
         props.onClick()
       }}
     >
-      <FaPen /> edit
+      <FaPen /> <div>edit</div>
     </EditButtonContainer>
   )
 }
@@ -132,6 +141,7 @@ function Collections() {
   const [showModalAdd, setShowModalAdd] = useState(false)
   const [showModalRemove, setShowModalRemove] = useState(false)
   const [showModalEdit, setShowModalEdit] = useState(false)
+  const [bannerImage, setBannerImage] = useState('/images/yurucamp.jpg')
 
   const [toBeRemovedCollection, setToBeRemovedCollection] =
     useState<Collection | null>(null)
@@ -162,19 +172,31 @@ function Collections() {
     navigate(`/collection/${slug}`)
   }
 
+  function getBannerImage() {
+    let images: string[] = []
+    if (collectionContext?.collections) {
+      const colls = collectionContext.collections
+      for (let i = 0; i < colls.length; i++) {
+        for (let j = 0; j < colls[i].list.length; j++) {
+          if (colls[i].list[j].bannerImage) {
+            images.push(colls[i].list[j].bannerImage)
+          }
+        }
+      }
+      if (images.length > 0)
+        setBannerImage(images[Math.floor(Math.random() * images.length)])
+    }
+  }
+
   useEffect(() => {
     setShowModalRemove(false)
     setToBeRemovedCollection(null)
+    getBannerImage()
   }, [])
 
   return (
     <Container>
-      <BannerImg
-        full
-        src="/images/yurucamp.jpg"
-        alt="Banner"
-        text="My Collections"
-      />
+      <BannerImg full src={bannerImage} alt="Banner" text="My Collections" />
       {showModalAdd && <ModalAddCollection toggleModalAdd={toggleModalAdd} />}
       {showModalRemove && (
         <ModalRemoveCollection
@@ -193,10 +215,14 @@ function Collections() {
             >
               <Image src={getImage(collection)} alt={collection.name} />
               <Info>
-                {collection.name} ({collection.list.length})
+                <Title>
+                  {collection.name} ({collection.list.length})
+                </Title>
+                <Actionables>
+                  <EditButton onClick={() => onClickPencil(collection)} />
+                  <RemoveButton onClick={() => onClickTrashcan(collection)} />
+                </Actionables>
               </Info>
-              <EditButton onClick={() => onClickPencil(collection)} />
-              <RemoveButton onClick={() => onClickTrashcan(collection)} />
             </CollItem>
           ))}
         </CollectionList>
