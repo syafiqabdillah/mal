@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { Helmet } from 'react-helmet'
 
+import ModalEditCollection from '../Collections/ModalEditCollection'
 import ModalRemoveAnime from './ModalRemoveAnime'
 
 import Back from '../Back'
@@ -26,6 +27,22 @@ const EmptyStateContainer = styled.div`
   text-align: center;
 `
 
+const EditColContainer = styled.div`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.7);
+  color: var(--bg-dark);
+  padding: 0.25em 0.65em;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  cursor: pointer;
+`
+
 function EmptyState() {
   return (
     <EmptyStateContainer>
@@ -35,8 +52,12 @@ function EmptyState() {
   )
 }
 
+function EditButton(props: { onClick: () => void }) {
+  return <EditColContainer onClick={props.onClick}>edit</EditColContainer>
+}
+
 function CollectionDetail() {
-  let { slug } = useParams()
+  let { id } = useParams()
   const collectionContext = useContext(CollectionContext)
   const [collection, setCollection] = useState<Collection | null>(null)
   const [bannerImage, setBannerImage] = useState('/images/yurucamp.jpg')
@@ -46,7 +67,7 @@ function CollectionDetail() {
     if (collections) {
       for (let i = 0; i < collections.length; i++) {
         let col = collections[i]
-        if (col.slug === slug) {
+        if (col.id === id) {
           setCollection(col)
           break
         }
@@ -66,6 +87,12 @@ function CollectionDetail() {
           bannerImages[Math.floor(Math.random() * bannerImages.length)]
         )
       }
+    }
+  }
+
+  function onClickEdit() {
+    if (collection) {
+      collectionContext?.selectToBeEditedCollection(collection)
     }
   }
 
@@ -89,6 +116,7 @@ function CollectionDetail() {
             <title>Collection | {collection.name}</title>
           </Helmet>
           <BannerImg src={bannerImage} text={collection.name} />
+          <EditButton onClick={onClickEdit} />
           <Content style={{ paddingTop: '15px' }}>
             <Back />
             {collection.list.length == 0 && <EmptyState />}
@@ -96,6 +124,7 @@ function CollectionDetail() {
           </Content>
         </React.Fragment>
       )}
+      <ModalEditCollection afterEdit={() => getCollection()} />
       <ModalRemoveAnime collection={collection} />
     </Container>
   )

@@ -44,18 +44,19 @@ const ErrorMessage = styled.small`
   margin-top: 15px;
 `
 
-function ModalEditCollection(props: { toggleModal: () => void }) {
+function ModalEditCollection(props: { afterEdit?: () => void }) {
   const collectionContext = useContext(CollectionContext)
 
   const [initName, setInitName] = useState('')
   const [name, setName] = useState('')
 
   useEffect(() => {
-    if (collectionContext?.selectedCollection) {
-      setName(collectionContext.selectedCollection.name)
-      setInitName(collectionContext.selectedCollection.name)
+    if (collectionContext?.toBeEditedCollection) {
+      const col = collectionContext.toBeEditedCollection
+      setName(col.name)
+      setInitName(col.name)
     }
-  }, [])
+  }, [collectionContext?.toBeEditedCollection])
 
   function onChangeInput(s: string) {
     // regex source https://bobbyhadz.com/blog/javascript-check-if-string-contains-special-characters#:~:text=To%20check%20if%20a%20string,special%20character%20and%20false%20otherwise.&text=Copied!
@@ -76,20 +77,25 @@ function ModalEditCollection(props: { toggleModal: () => void }) {
     return s.toLowerCase().replace(/ /g, '-')
   }
 
-  function handleSubmit() {
+  function onClickSave() {
     if (
       name != '' &&
       !isInputError() &&
-      collectionContext?.selectedCollection
+      collectionContext?.toBeEditedCollection
     ) {
       let updatedCol = {
-        ...collectionContext?.selectedCollection,
+        ...collectionContext?.toBeEditedCollection,
         name,
         slug: getSlug(name),
       }
       collectionContext?.editCollection(updatedCol)
-      props.toggleModal()
+      collectionContext.selectToBeEditedCollection(null)
+      if (props.afterEdit) props.afterEdit()
     }
+  }
+
+  function onClickCancel() {
+    collectionContext?.selectToBeEditedCollection(null)
   }
 
   const colNames: string[] = collectionContext
@@ -100,38 +106,40 @@ function ModalEditCollection(props: { toggleModal: () => void }) {
     ? collectionContext.collections.map((col) => col.slug)
     : []
 
-  return (
-    <ModalContainer onClick={props.toggleModal}>
-      <ModalFormContainer onClick={(e) => e.stopPropagation()}>
-        <ModalTitle>Edit Collection</ModalTitle>
-        <ModalInput
-          autoFocus
-          type="text"
-          value={name}
-          onChange={(e) => onChangeInput(e.target.value)}
-          onKeyDown={(e) => (e.key === 'Enter' ? handleSubmit() : null)}
-        />
-        {isInputError() && (
-          <ErrorMessage>Same collection name is not allowed</ErrorMessage>
-        )}
-        <div style={{ display: 'flex' }}>
-          <DarkButton
-            disabled={isInputError()}
-            style={{ marginTop: '15px', width: '100%' }}
-            onClick={handleSubmit}
-          >
-            Save
-          </DarkButton>
-          <Button
-            style={{ width: '100%', marginTop: '10px' }}
-            onClick={() => props.toggleModal()}
-          >
-            Cancel
-          </Button>
-        </div>
-      </ModalFormContainer>
-    </ModalContainer>
-  )
+  if (collectionContext?.toBeEditedCollection)
+    return (
+      <ModalContainer>
+        <ModalFormContainer onClick={(e) => e.stopPropagation()}>
+          <ModalTitle>Edit Collection</ModalTitle>
+          <ModalInput
+            autoFocus
+            type="text"
+            value={name}
+            onChange={(e) => onChangeInput(e.target.value)}
+            onKeyDown={(e) => (e.key === 'Enter' ? onClickSave() : null)}
+          />
+          {isInputError() && (
+            <ErrorMessage>Same collection name is not allowed</ErrorMessage>
+          )}
+          <div style={{ display: 'flex' }}>
+            <DarkButton
+              disabled={isInputError()}
+              style={{ marginTop: '15px', width: '100%' }}
+              onClick={onClickSave}
+            >
+              Save
+            </DarkButton>
+            <Button
+              style={{ width: '100%', marginTop: '10px' }}
+              onClick={onClickCancel}
+            >
+              Cancel
+            </Button>
+          </div>
+        </ModalFormContainer>
+      </ModalContainer>
+    )
+  return <div />
 }
 
 export default ModalEditCollection

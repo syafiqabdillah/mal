@@ -152,7 +152,10 @@ function AnimeDetail() {
         <CollectionInfo>
           Collections:
           {getRelatedCollections().map((col) => (
-            <CollectionItem key={col.slug} to={`/collection/${col.slug}`}>
+            <CollectionItem
+              key={col.slug}
+              to={`/collection/${col.id}/${col.slug}`}
+            >
               {col.name}
             </CollectionItem>
           ))}

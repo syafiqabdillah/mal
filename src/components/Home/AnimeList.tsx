@@ -12,10 +12,6 @@ const List = styled.div`
   gap: 5px;
   width: 100%;
 
-  @media (min-width: 900px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
   @media (min-width: 1000px) {
     grid-template-columns: repeat(5, 1fr);
   }

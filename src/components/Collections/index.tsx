@@ -181,12 +181,11 @@ function Collections() {
   }
 
   function onClickPencil(col: Collection) {
-    collectionContext?.selectOneCollection(col)
-    toggleModalEdit()
+    collectionContext?.selectToBeEditedCollection(col)
   }
 
-  function goToCollectionDetail(slug: string): void {
-    navigate(`/collection/${slug}`)
+  function goToCollectionDetail(col: Collection): void {
+    navigate(`/collection/${col.id}/${col.slug}`)
   }
 
   function getBannerImage() {
@@ -225,7 +224,7 @@ function Collections() {
           collection={toBeRemovedCollection}
         />
       )}
-      {showModalEdit && <ModalEditCollection toggleModal={toggleModalEdit} />}
+      <ModalEditCollection />
       <Content>
         <AddButton onClick={toggleModalAdd} />
         {collectionContext?.collections.length === 0 && (
@@ -234,7 +233,7 @@ function Collections() {
         <CollectionList>
           {collectionContext?.collections.map((collection) => (
             <CollItem
-              onClick={() => goToCollectionDetail(collection.slug)}
+              onClick={() => goToCollectionDetail(collection)}
               key={collection.name}
             >
               <Image src={getImage(collection)} alt={collection.name} />

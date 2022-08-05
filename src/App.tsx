@@ -27,7 +27,7 @@ function App() {
         <Route path="" element={<Home />} />
         <Route path="/anime/:id" element={<AnimeDetail />} />
         <Route path="/collections" element={<Collections />} />
-        <Route path="/collection/:slug" element={<CollectionDetail />} />
+        <Route path="/collection/:id/:slug" element={<CollectionDetail />} />
       </Routes>
       <Navbar />
     </Container>

@@ -11,6 +11,7 @@ import { getTitle } from '../../utils/anime'
 
 import { Anime } from '../../Types/Anime'
 import { Collection } from '../../Types/Collection'
+import ModalEditCollection from '../Collections/ModalEditCollection'
 
 type ModalRemoveAnimeType = {
   collection: Collection | null

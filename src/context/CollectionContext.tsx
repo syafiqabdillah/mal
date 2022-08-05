@@ -8,6 +8,8 @@ type CollectionContextType = {
   collections: Collection[]
   selectedCollections: Collection[]
   selectedCollection: Collection | null
+  toBeEditedCollection: Collection | null
+  selectToBeEditedCollection: (col: Collection | null) => void
   selectOneCollection: (col: Collection | null) => void
   addCollection: (name: string, slug: string) => void
   removeCollection: (collection: Collection) => void
@@ -28,6 +30,8 @@ export function CollectionProvider(props: { children: React.ReactNode }) {
   )
   const [selectedCollection, setSelectedCollection] =
     useState<Collection | null>(null)
+  const [toBeEditedCollection, setToBeEditedCollection] =
+    useState<Collection | null>(null)
 
   function saveToLocalStorage(colls: Collection[]): void {
     localStorage.setItem('collections', JSON.stringify(colls))
@@ -39,6 +43,10 @@ export function CollectionProvider(props: { children: React.ReactNode }) {
 
   const selectOneCollection = (col: Collection | null) => {
     setSelectedCollection(col)
+  }
+
+  const selectToBeEditedCollection = (col: Collection | null) => {
+    setToBeEditedCollection(col)
   }
 
   const unselectCollection = (col: Collection) => {
@@ -115,6 +123,8 @@ export function CollectionProvider(props: { children: React.ReactNode }) {
         collections,
         selectedCollections,
         selectedCollection,
+        toBeEditedCollection,
+        selectToBeEditedCollection,
         selectOneCollection,
         addCollection,
         removeCollection,
