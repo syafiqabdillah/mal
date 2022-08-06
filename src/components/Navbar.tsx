@@ -1,7 +1,6 @@
 import styled from '@emotion/styled'
 import { FaHome } from 'react-icons/fa'
 import { BsFillCollectionFill } from 'react-icons/bs'
-import { Link } from 'react-router-dom'
 
 const NavbarContainer = styled.div`
   position: fixed;
