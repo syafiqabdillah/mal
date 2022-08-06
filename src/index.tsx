@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 
 import reportWebVitals from './reportWebVitals'
+import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 
 import App from './App'
 
@@ -31,6 +32,8 @@ root.render(
     </ApolloProvider>
   </React.StrictMode>
 )
+
+serviceWorkerRegistration.unregister()
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

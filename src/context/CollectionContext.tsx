@@ -106,7 +106,9 @@ export function CollectionProvider(props: { children: React.ReactNode }) {
     const updatedCollection = Object.assign(collection, {
       list: filterredAnimeList,
     })
-    setCollections([...otherCollections, updatedCollection])
+    let newCollections: Collection[] = [...otherCollections, updatedCollection]
+    setCollections(newCollections)
+    saveToLocalStorage(newCollections)
   }
 
   const syncLocalStorage = () => {
