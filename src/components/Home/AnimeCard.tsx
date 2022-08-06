@@ -7,14 +7,10 @@ import AnimeContext from '../../context/AnimeContext'
 
 import { Anime } from '../../Types/Anime'
 
+import { getTitle } from '../../utils/anime'
+
 type AnimeCardTypes = {
   anime: Anime
-}
-
-type MediaTitle = {
-  english?: string
-  romaji?: string
-  native?: string
 }
 
 const Container = styled(Link)`
@@ -108,13 +104,6 @@ const RemoveButtonContainer = styled.div`
   right: 8px;
 `
 
-function getTitle(title: MediaTitle): string {
-  if (title.english) return title.english
-  if (title.romaji) return title.romaji
-  if (title.native) return title.native
-  return '(untitled)'
-}
-
 function getImage(anime: Anime): string {
   if (anime.coverImage.large) return anime.coverImage.large
   if (anime.bannerImage) return anime.bannerImage
@@ -176,12 +165,13 @@ function AnimeCard(props: AnimeCardTypes) {
     >
       <Image
         src={getImage(props.anime)}
-        alt={props.anime.title.english}
+        alt={getTitle(props.anime)}
         height="30"
         width="30"
+        loading="lazy"
       />
       <Info>
-        <Title>{getTitle(props.anime.title)}</Title>
+        <Title>{getTitle(props.anime)}</Title>
         <GenreList>
           {getGenre(props.anime).map((genre, index) => (
             <GenreItem key={`genre-${props.anime.idMal}-${index}`}>

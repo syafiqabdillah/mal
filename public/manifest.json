@@ -8,13 +8,13 @@
       "type": "image/x-icon"
     },
     {
-      "src": "shimarin.jpg",
-      "type": "image/jpg",
+      "src": "shimarin.png",
+      "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "shimarin.jpg",
-      "type": "image/jpg",
+      "src": "shimarin.png",
+      "type": "image/png",
       "sizes": "512x512"
     }
   ],
