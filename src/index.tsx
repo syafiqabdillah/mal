@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
+import SnackbarProvider from 'react-simple-snackbar'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 
 import reportWebVitals from './reportWebVitals'
@@ -25,7 +26,9 @@ root.render(
       <BrowserRouter>
         <CollectionProvider>
           <AnimeProvider>
-            <App />
+            <SnackbarProvider>
+              <App />
+            </SnackbarProvider>
           </AnimeProvider>
         </CollectionProvider>
       </BrowserRouter>

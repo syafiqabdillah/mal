@@ -1,5 +1,6 @@
 import { useContext } from 'react'
 import styled from '@emotion/styled'
+import { useSnackbar } from 'react-simple-snackbar'
 
 import Button, { DarkButton } from '../Button'
 
@@ -51,11 +52,13 @@ const Options = styled.div`
 
 function ModalRemoveCollection(props: ModalRemoveCollectionType) {
   const collectionContext = useContext(CollectionContext)
+  const [openSnackbar] = useSnackbar()
 
   function onClickYesRemove(col: Collection | null) {
     if (col) {
       collectionContext?.removeCollection(col)
       props.toggleModal()
+      openSnackbar(`Removed \"${col.name}\" from collections`)
     }
   }
 

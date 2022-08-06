@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import styled from '@emotion/styled'
+import { useSnackbar } from 'react-simple-snackbar'
 
 import Button, { DarkButton } from '../Button'
 
@@ -57,6 +57,7 @@ const Options = styled.div`
 function ModalRemoveAnime(props: ModalRemoveAnimeType) {
   const animeContext = useContext(AnimeContext)
   const collectionContext = useContext(CollectionContext)
+  const [openSnackbar] = useSnackbar()
 
   const [anime, setAnime] = useState<Anime | null>(null)
 
@@ -64,6 +65,11 @@ function ModalRemoveAnime(props: ModalRemoveAnimeType) {
     if (collectionContext && anime && props.collection) {
       collectionContext?.removeAnimeFromCollection(anime, props.collection)
       closeModal()
+      openSnackbar(
+        `Removed \"${getTitle(anime)}\" from collection \"${
+          props.collection.name
+        }\"`
+      )
     }
   }
 

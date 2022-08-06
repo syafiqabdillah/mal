@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
+import { useSnackbar } from 'react-simple-snackbar'
 
 import Button, { DarkButton } from '../Button'
 
@@ -49,6 +50,7 @@ function ModalEditCollection(props: { afterEdit?: () => void }) {
 
   const [initName, setInitName] = useState('')
   const [name, setName] = useState('')
+  const [openSnackbar] = useSnackbar()
 
   useEffect(() => {
     if (collectionContext?.toBeEditedCollection) {
@@ -90,6 +92,9 @@ function ModalEditCollection(props: { afterEdit?: () => void }) {
       }
       collectionContext?.editCollection(updatedCol)
       collectionContext.selectToBeEditedCollection(null)
+      openSnackbar(
+        `Editted collection name from \"${initName}\" to \"${name}\"`
+      )
       if (props.afterEdit) props.afterEdit()
     }
   }

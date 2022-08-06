@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { FaPlus } from 'react-icons/fa'
+import { useSnackbar } from 'react-simple-snackbar'
 
 import Button, { DarkButton } from '../Button'
 
@@ -8,7 +9,7 @@ import AnimeContext from '../../context/AnimeContext'
 import CollectionContext from '../../context/CollectionContext'
 
 import { Collection } from '../../Types/Collection'
-import { collectionNameValid } from '../../utils/anime'
+import { collectionNameValid, getTitle } from '../../utils/anime'
 
 const Container = styled.div`
   position: fixed;
@@ -95,6 +96,7 @@ const ButtonCancel = styled(Button)`
 function BulkAddForm() {
   const animeContext = useContext(AnimeContext)
   const collectionContext = useContext(CollectionContext)
+  const [openSnackbar] = useSnackbar()
 
   const [newColName, setNewColName] = useState('')
   const [collectionMessage, setCollectionMessage] = useState(
@@ -158,8 +160,14 @@ function BulkAddForm() {
   }
 
   function onClickSubmit() {
-    if (isFormValid() && animeContext) {
+    if (isFormValid() && animeContext && collectionContext) {
+      let colNames: string = collectionContext?.selectedCollections
+        .map((col) => col.name)
+        .join(', ')
       collectionContext?.bulkAdd(animeContext?.selectedAnime)
+      openSnackbar(
+        `Added ${animeContext.selectedAnime.length} anime to collections ${colNames}`
+      )
       animeContext?.unselectAllAnime()
     }
   }

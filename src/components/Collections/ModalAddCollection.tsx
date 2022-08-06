@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react'
 import styled from '@emotion/styled'
+import { useSnackbar } from 'react-simple-snackbar'
 
 import { DarkButton } from '../Button'
 
@@ -46,6 +47,7 @@ const ErrorMessage = styled.small`
 
 function ModalAddCollection(props: { toggleModalAdd: () => void }) {
   const collectionContext = useContext(CollectionContext)
+  const [openSnackbar] = useSnackbar()
 
   const [name, setName] = useState('')
 
@@ -71,6 +73,8 @@ function ModalAddCollection(props: { toggleModalAdd: () => void }) {
     if (name != '' && !isInputError()) {
       collectionContext?.addCollection(name, getSlug(name))
       props.toggleModalAdd()
+      openSnackbar(`Added \"${name}\" to collections`)
+      setName('')
     }
   }
 
