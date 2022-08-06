@@ -63,7 +63,7 @@ const Info = styled.div`
   background-color: rgba(255, 255, 255, 0.75);
 `
 
-const Title = styled.h3`
+const Title = styled.h2`
   margin: 0;
   font-size: 12pt;
   overflow: hidden;
