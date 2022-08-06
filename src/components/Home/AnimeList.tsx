@@ -21,7 +21,7 @@ function AnimeList(props: { list: Anime[]; style?: any }) {
   return (
     <List style={props.style}>
       {props.list.map((anime: Anime) => (
-        <AnimeCard anime={anime} key={anime.idMal} />
+        <AnimeCard anime={anime} key={anime.id} />
       ))}
     </List>
   )

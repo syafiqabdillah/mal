@@ -5,11 +5,12 @@ import AnimeList from '../AnimeList'
 
 import { Anime } from '../../../Types/Anime'
 
-const getDummyAnime = (idMal: number): Anime => {
+const getDummyAnime = (id: number): Anime => {
   return {
-    idMal: idMal,
+    id: id,
+    idMal: id,
     title: {
-      english: `Test ${idMal}`,
+      english: `Test ${id}`,
       romaji: 'Test 123',
       native: 'Test',
     },

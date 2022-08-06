@@ -41,7 +41,8 @@ function Pagination(props: { pageInfo: PageInfo }) {
     return props.pageInfo.currentPage > 1
   }
   function getQuery() {
-    return qs.parse(window.location.search).q
+    let q = qs.parse(window.location.search).q
+    return q ? q : ' '
   }
 
   return (

@@ -1,4 +1,5 @@
 export type Anime = {
+  id: number
   idMal: number
   bannerImage: string
   description: string

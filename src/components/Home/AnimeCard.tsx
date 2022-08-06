@@ -38,14 +38,15 @@ const Image = styled.img`
 `
 
 const Checkbox = styled.input`
-  height: 20px;
-  width: 20px;
+  height: 30px;
+  width: 30px;
   outline: none;
   border: none;
+  opacity: 80%;
   border-radius: 4px;
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 2px;
+  right: 2px;
 `
 
 const Info = styled.div`
@@ -168,7 +169,6 @@ function AnimeCard(props: AnimeCardTypes) {
         alt={getTitle(props.anime)}
         height="30"
         width="30"
-        loading="lazy"
       />
       <Info>
         <Title>{getTitle(props.anime)}</Title>

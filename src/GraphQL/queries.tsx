@@ -9,6 +9,7 @@ export const GET_MEDIA = gql`
         hasNextPage
       }
       media(search: $search) {
+        id
         idMal
         bannerImage
         genres
@@ -30,6 +31,7 @@ export const GET_MEDIA = gql`
 export const GET_MEDIA_DETAIL = gql`
   query ($idMal: Int) {
     Media(idMal: $idMal, type: ANIME) {
+      id
       idMal
       bannerImage
       description

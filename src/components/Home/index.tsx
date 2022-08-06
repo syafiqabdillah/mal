@@ -6,15 +6,16 @@ import { Helmet } from 'react-helmet'
 
 import AnimeList from './AnimeList'
 import BulkAddForm from './BulkAddForm'
-import Content from '../Content'
 import Pagination from './Pagination'
+import Search from './Search'
 
 import BannerImg from '../BannerImg'
+import Content from '../Content'
+
+import { GET_MEDIA } from '../../GraphQL/queries'
 
 import { Anime } from '../../Types/Anime'
 import { PageInfo } from '../../Types/PageInfo'
-
-import { GET_MEDIA } from '../../GraphQL/queries'
 
 const Container = styled.div`
   display: flex;
@@ -26,17 +27,7 @@ const HomeContent = styled(Content)`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
-
-const SearchInput = styled.input`
-  height: 40px;
-  width: 100%;
-  border-radius: 4px;
-  margin-top: 10px;
-  outline: none;
-  border: none;
-  padding: 0.25em 1em;
-  background-color: rgba(255, 255, 255, 0.7);
+  position: relative;
 `
 
 function Home() {
@@ -51,7 +42,6 @@ function Home() {
   const [list, setList] = useState<Anime[]>([])
   const [pageInfo, setPageInfo] = useState<PageInfo>()
   const [loadingList, setLoadingList] = useState(true)
-  const [search, setSearch] = useState('')
   const [bannerImage, setBannerImage] = useState('/images/yurucamp.jpg')
 
   function getBannerImage(): void {
@@ -68,10 +58,6 @@ function Home() {
     }
   }
 
-  function goSearch(): void {
-    window.location.href = `/?p=1&q=${encodeURIComponent(search)}`
-  }
-
   useEffect(() => {
     window.scrollTo(0, 0)
     if (data) {
@@ -80,7 +66,7 @@ function Home() {
       setPageInfo(data.Page.pageInfo)
       getBannerImage()
     }
-  }, [data])
+  }, [data, list])
 
   return (
     <Container>
@@ -96,13 +82,7 @@ function Home() {
           <div>Loading...</div>
         ) : (
           <React.Fragment>
-            <SearchInput
-              type="text"
-              placeholder="Search by title e.g. Haikyuu, Naruto"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              onKeyDown={(e) => (e.key === 'Enter' ? goSearch() : null)}
-            />
+            <Search />
             <AnimeList list={list} />
             <Pagination pageInfo={pageInfo} />
           </React.Fragment>

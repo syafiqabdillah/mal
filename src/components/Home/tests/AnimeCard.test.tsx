@@ -6,6 +6,7 @@ import AnimeCard from '../AnimeCard'
 import { Anime } from '../../../Types/Anime'
 
 const dummyAnime: Anime = {
+  id: 1,
   idMal: 123,
   title: {
     english: 'Test 123',

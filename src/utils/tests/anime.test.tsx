@@ -4,6 +4,7 @@ import { getTitle, collectionNameValid } from '../anime'
 describe('getTitle', () => {
   test('is getTitle return the right output if anime has english title', () => {
     const anime: Anime = {
+      id: 1,
       idMal: 123,
       title: {
         english: 'Title English',
@@ -26,6 +27,7 @@ describe('getTitle', () => {
 
   test('is getTitle return the right output if anime has no english title and has romaji title', () => {
     const anime: Anime = {
+      id: 1,
       idMal: 123,
       title: {
         english: '',
@@ -48,6 +50,7 @@ describe('getTitle', () => {
 
   test('is getTitle return the right output if anime only has native title', () => {
     const anime: Anime = {
+      id: 1,
       idMal: 123,
       title: {
         english: '',
