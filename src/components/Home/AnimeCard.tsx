@@ -123,7 +123,7 @@ function getImage(anime: Anime): string {
 
 function getGenre(anime: Anime): string[] {
   if (anime.genres.length <= 3) return anime.genres
-  return anime.genres.slice(3)
+  return anime.genres.slice(0, 3)
 }
 
 function AnimeCard(props: AnimeCardTypes) {

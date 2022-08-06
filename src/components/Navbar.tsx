@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
-import { Link } from 'react-router-dom'
 import { FaHome } from 'react-icons/fa'
 import { BsFillCollectionFill } from 'react-icons/bs'
+import { Link } from 'react-router-dom'
 
 const NavbarContainer = styled.div`
   position: fixed;
@@ -17,7 +17,7 @@ const NavbarContainer = styled.div`
   gap: 64px;
 `
 
-const NavbarItemContainer = styled(Link)`
+const NavbarItemContainer = styled.a`
   text-decoration: none;
   color: var(--bg-light);
   display: flex;
@@ -34,11 +34,11 @@ const NavbarItemContainer = styled(Link)`
 function Navbar() {
   return (
     <NavbarContainer>
-      <NavbarItemContainer to={'/'}>
+      <NavbarItemContainer href="/">
         <FaHome />
         <div>Home</div>
       </NavbarItemContainer>
-      <NavbarItemContainer to={'/collections'}>
+      <NavbarItemContainer href={'/collections'}>
         <BsFillCollectionFill />
         <div>Collections</div>
       </NavbarItemContainer>

@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import React from 'react'
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 
 import { PageInfo } from '../../Types/PageInfo'
 
@@ -15,20 +16,18 @@ const PaginationContainer = styled.div`
 `
 
 const PaginationItem = styled('a')<AProps>`
-  border: 1px solid slategray;
   height: 50px;
   width: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
   text-decoration: none;
-  color: ${(props) => (props.active ? 'var(--bg-dark)' : 'var(--bg-light)')};
+  color: var(--bg-light);
   background-color: ${(props) =>
-    props.active ? 'var(--bg-light)' : 'var(--bg-dark)'};
+    props.active ? 'var(--bg-grey)' : 'var(--bg-dark)'};
 
   &:hover {
-    background-color: var(--bg-light);
-    color: var(--bg-dark);
+    background-color: var(--bg-grey);
     cursor: pointer;
   }
 `
@@ -45,30 +44,53 @@ function Pagination(props: { pageInfo: PageInfo }) {
     <PaginationContainer>
       {hasPrev() && (
         <React.Fragment>
-          <PaginationItem href={`/?p=1`}>&lt;&lt;</PaginationItem>
-          <PaginationItem href={`/?p=${props.pageInfo.currentPage - 1}`}>
-            &lt;
+          <PaginationItem href={`/?p=1`} data-testid="first-page-btn">
+            <FaChevronLeft />
+            <FaChevronLeft />
           </PaginationItem>
-          <PaginationItem href={`/?p=${props.pageInfo.currentPage - 1}`}>
+          <PaginationItem
+            href={`/?p=${props.pageInfo.currentPage - 1}`}
+            data-testid="prev-page-btn"
+          >
+            <FaChevronLeft />
+          </PaginationItem>
+          <PaginationItem
+            href={`/?p=${props.pageInfo.currentPage - 1}`}
+            data-testid="prev-num-page-btn"
+          >
             {props.pageInfo.currentPage - 1}
           </PaginationItem>
         </React.Fragment>
       )}
 
-      <PaginationItem active={true} href={`/?p=${props.pageInfo.currentPage}`}>
+      <PaginationItem
+        active={true}
+        href={`/?p=${props.pageInfo.currentPage}`}
+        data-testid="current-page-btn"
+      >
         {props.pageInfo.currentPage}
       </PaginationItem>
 
       {hasNext() && (
         <React.Fragment>
-          <PaginationItem href={`/?p=${props.pageInfo.currentPage + 1}`}>
+          <PaginationItem
+            href={`/?p=${props.pageInfo.currentPage + 1}`}
+            data-testid="next-num-page-btn"
+          >
             {props.pageInfo.currentPage + 1}
           </PaginationItem>
-          <PaginationItem href={`/?p=${props.pageInfo.currentPage + 1}`}>
-            &gt;
+          <PaginationItem
+            href={`/?p=${props.pageInfo.currentPage + 1}`}
+            data-testid="next-page-btn"
+          >
+            <FaChevronRight />
           </PaginationItem>
-          <PaginationItem href={`/?p=${props.pageInfo.total}`}>
-            &gt;&gt;
+          <PaginationItem
+            href={`/?p=${props.pageInfo.total}`}
+            data-testid="last-page-btn"
+          >
+            <FaChevronRight />
+            <FaChevronRight />
           </PaginationItem>
         </React.Fragment>
       )}
