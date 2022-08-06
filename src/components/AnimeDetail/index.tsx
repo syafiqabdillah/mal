@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/client'
 import { FaChevronLeft } from 'react-icons/fa'
 import { Helmet } from 'react-helmet'
 import styled from '@emotion/styled'
+import { useSnackbar } from 'react-simple-snackbar'
 
 import Banner from './Banner'
 import Button from '../Button'
@@ -83,6 +84,7 @@ function AnimeDetail() {
   let { id } = useParams()
   const animeContext = useContext(AnimeContext)
   const collectionContext = useContext(CollectionContext)
+  const [openSnackbar] = useSnackbar()
 
   const [anime, setAnime] = useState<Anime>()
   const [loadingAnime, setLoadingAnime] = useState(true)
@@ -92,6 +94,15 @@ function AnimeDetail() {
       idMal: id,
     },
   })
+
+  useEffect(() => {
+    if (error) {
+      openSnackbar('Error fetching anime. Redirecting to Home.')
+      setTimeout(() => {
+        window.location.href = '/'
+      }, 2000)
+    }
+  }, [error])
 
   useEffect(() => {
     window.scrollTo(0, 0)

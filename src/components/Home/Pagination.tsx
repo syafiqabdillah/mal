@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import React from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+import * as qs from 'query-string'
 
 import { PageInfo } from '../../Types/PageInfo'
 
@@ -39,23 +40,29 @@ function Pagination(props: { pageInfo: PageInfo }) {
   function hasPrev() {
     return props.pageInfo.currentPage > 1
   }
+  function getQuery() {
+    return qs.parse(window.location.search).q
+  }
 
   return (
     <PaginationContainer>
       {hasPrev() && (
         <React.Fragment>
-          <PaginationItem href={`/?p=1`} data-testid="first-page-btn">
+          <PaginationItem
+            href={`/?p=1&q=${getQuery()}`}
+            data-testid="first-page-btn"
+          >
             <FaChevronLeft />
             <FaChevronLeft />
           </PaginationItem>
           <PaginationItem
-            href={`/?p=${props.pageInfo.currentPage - 1}`}
+            href={`/?p=${props.pageInfo.currentPage - 1}&q=${getQuery()}`}
             data-testid="prev-page-btn"
           >
             <FaChevronLeft />
           </PaginationItem>
           <PaginationItem
-            href={`/?p=${props.pageInfo.currentPage - 1}`}
+            href={`/?p=${props.pageInfo.currentPage - 1}&q=${getQuery()}`}
             data-testid="prev-num-page-btn"
           >
             {props.pageInfo.currentPage - 1}
@@ -65,7 +72,7 @@ function Pagination(props: { pageInfo: PageInfo }) {
 
       <PaginationItem
         active={true}
-        href={`/?p=${props.pageInfo.currentPage}`}
+        href={`/?p=${props.pageInfo.currentPage}&q=${getQuery()}`}
         data-testid="current-page-btn"
       >
         {props.pageInfo.currentPage}
@@ -74,13 +81,13 @@ function Pagination(props: { pageInfo: PageInfo }) {
       {hasNext() && (
         <React.Fragment>
           <PaginationItem
-            href={`/?p=${props.pageInfo.currentPage + 1}`}
+            href={`/?p=${props.pageInfo.currentPage + 1}&q=${getQuery()}`}
             data-testid="next-num-page-btn"
           >
             {props.pageInfo.currentPage + 1}
           </PaginationItem>
           <PaginationItem
-            href={`/?p=${props.pageInfo.currentPage + 1}`}
+            href={`/?p=${props.pageInfo.currentPage + 1}&q=${getQuery()}`}
             data-testid="next-page-btn"
           >
             <FaChevronRight />

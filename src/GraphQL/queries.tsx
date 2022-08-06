@@ -1,14 +1,14 @@
 import { gql } from '@apollo/client'
 
 export const GET_MEDIA = gql`
-  query ($page: Int) {
+  query ($page: Int, $search: String) {
     Page(page: $page, perPage: 10) {
       pageInfo {
         total
         currentPage
         hasNextPage
       }
-      media {
+      media(search: $search) {
         idMal
         bannerImage
         genres

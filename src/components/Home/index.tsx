@@ -28,29 +28,48 @@ const HomeContent = styled(Content)`
   align-items: center;
 `
 
+const SearchInput = styled.input`
+  height: 40px;
+  width: 100%;
+  border-radius: 4px;
+  margin-top: 10px;
+  outline: none;
+  border: none;
+  padding: 0.25em 1em;
+  background-color: rgba(255, 255, 255, 0.7);
+`
+
 function Home() {
   const page = qs.parse(window.location.search).p
+  const query = qs.parse(window.location.search).q
   const { data } = useQuery(GET_MEDIA, {
     variables: {
       page: page ? page : 1,
+      search: query ? query : null,
     },
   })
   const [list, setList] = useState<Anime[]>([])
   const [pageInfo, setPageInfo] = useState<PageInfo>()
   const [loadingList, setLoadingList] = useState(true)
+  const [search, setSearch] = useState('')
+  const [bannerImage, setBannerImage] = useState('/images/yurucamp.jpg')
 
-  function getBannerImage() {
-    let image = '/image/yurucamp.jpg'
+  function getBannerImage(): void {
     if (list.length > 0) {
       let bannerImages: string[] = []
       list.forEach((anime) => {
         if (anime.bannerImage) bannerImages.push(anime.bannerImage)
       })
       if (bannerImages.length > 0) {
-        return bannerImages[Math.floor(Math.random() * bannerImages.length)]
+        setBannerImage(
+          bannerImages[Math.floor(Math.random() * bannerImages.length)]
+        )
       }
     }
-    return image
+  }
+
+  function goSearch(): void {
+    window.location.href = `/?p=1&q=${encodeURIComponent(search)}`
   }
 
   useEffect(() => {
@@ -59,6 +78,7 @@ function Home() {
       setList(data.Page.media)
       setLoadingList(false)
       setPageInfo(data.Page.pageInfo)
+      getBannerImage()
     }
   }, [data])
 
@@ -69,13 +89,20 @@ function Home() {
         <meta name="description" content="My list is way superior than yours" />
       </Helmet>
       {list.length > 0 && (
-        <BannerImg src={getBannerImage()} alt="Banner" text="My Anime List" />
+        <BannerImg src={bannerImage} alt="Banner" text="My Anime List" />
       )}
       <HomeContent>
         {loadingList || !list || !pageInfo ? (
           <div>Loading...</div>
         ) : (
           <React.Fragment>
+            <SearchInput
+              type="text"
+              placeholder="Search by title e.g. Haikyuu, Naruto"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => (e.key === 'Enter' ? goSearch() : null)}
+            />
             <AnimeList list={list} />
             <Pagination pageInfo={pageInfo} />
           </React.Fragment>
