@@ -39,19 +39,23 @@ function Search() {
   const [search, setSearch] = useState('')
 
   function goSearch(): void {
-    window.location.href = `/?p=1&q=${encodeURIComponent(search)}`
+    window.location.assign(`/?p=1&q=${encodeURIComponent(search)}`)
   }
 
   return (
     <Container>
+      <label htmlFor="search" style={{ display: 'none' }}>
+        search
+      </label>
       <SearchInput
+        id="search"
         type="text"
         placeholder="Search by title e.g. Haikyuu, Naruto, One Piece"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         onKeyDown={(e) => (e.key === 'Enter' ? goSearch() : null)}
       />
-      <SearchButton onClick={goSearch}>
+      <SearchButton onClick={goSearch} data-testid="search-btn">
         <FaSearch />
       </SearchButton>
     </Container>
