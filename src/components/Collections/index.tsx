@@ -125,9 +125,10 @@ function AddButton(props: { onClick: () => void }) {
   )
 }
 
-function EditButton(props: { onClick: () => void }) {
+function EditButton(props: { onClick: () => void; collection: Collection }) {
   return (
     <EditButtonContainer
+      data-cy={`edit-${props.collection.name}`}
       onClick={(e) => {
         e.stopPropagation()
         props.onClick()
@@ -138,9 +139,10 @@ function EditButton(props: { onClick: () => void }) {
   )
 }
 
-function RemoveButton(props: { onClick: () => void }) {
+function RemoveButton(props: { onClick: () => void; collection: Collection }) {
   return (
     <RemoveButtonContainer
+      data-cy={`remove-${props.collection.name}`}
       onClick={(e) => {
         e.stopPropagation()
         props.onClick()
@@ -243,8 +245,14 @@ function Collections() {
                     {collection.name} ({collection.list.length})
                   </Title>
                   <Actionables>
-                    <EditButton onClick={() => onClickPencil(collection)} />
-                    <RemoveButton onClick={() => onClickTrashcan(collection)} />
+                    <EditButton
+                      onClick={() => onClickPencil(collection)}
+                      collection={collection}
+                    />
+                    <RemoveButton
+                      onClick={() => onClickTrashcan(collection)}
+                      collection={collection}
+                    />
                   </Actionables>
                 </Info>
               </CollItem>

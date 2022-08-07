@@ -96,7 +96,7 @@ function ModalAddCollection(props: { toggleModalAdd: () => void }) {
           <ErrorMessage>Same collection name is not allowed</ErrorMessage>
         )}
         <DarkButton
-          disabled={isInputError()}
+          disabled={name === '' || isInputError()}
           style={{ marginTop: '15px', width: '100%' }}
           onClick={handleSubmit}
         >

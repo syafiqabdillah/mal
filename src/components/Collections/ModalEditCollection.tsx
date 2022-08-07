@@ -122,7 +122,7 @@ function ModalEditCollection(props: { afterEdit?: () => void }) {
           )}
           <div style={{ display: 'flex' }}>
             <DarkButton
-              disabled={isInputError()}
+              disabled={name === '' || isInputError()}
               style={{ marginTop: '15px', width: '100%' }}
               onClick={onClickSave}
             >
