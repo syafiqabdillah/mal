@@ -68,10 +68,8 @@ function ModalEditCollection(props: { afterEdit?: () => void }) {
   }
 
   function isInputError() {
-    let slug = getSlug(name)
     if (initName === name) return false
     if (colNames.includes(name)) return true
-    if (name.length === slug.length) return colSlugs.includes(slug)
     return false
   }
 
@@ -107,10 +105,6 @@ function ModalEditCollection(props: { afterEdit?: () => void }) {
     ? collectionContext?.collections.map((col) => col.name)
     : []
 
-  const colSlugs: string[] = collectionContext
-    ? collectionContext.collections.map((col) => col.slug)
-    : []
-
   if (collectionContext?.toBeEditedCollection)
     return (
       <ModalContainer>
@@ -124,7 +118,7 @@ function ModalEditCollection(props: { afterEdit?: () => void }) {
             onKeyDown={(e) => (e.key === 'Enter' ? onClickSave() : null)}
           />
           {isInputError() && (
-            <ErrorMessage>Same collection name is not allowed</ErrorMessage>
+            <ErrorMessage>Collection name must be unique</ErrorMessage>
           )}
           <div style={{ display: 'flex' }}>
             <DarkButton

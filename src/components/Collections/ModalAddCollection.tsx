@@ -61,7 +61,6 @@ function ModalAddCollection(props: { toggleModalAdd: () => void }) {
   function isInputError() {
     let slug = getSlug(name)
     if (colNames.includes(name)) return true
-    if (name.length === slug.length) return colSlugs.includes(slug)
     return false
   }
 
@@ -80,10 +79,6 @@ function ModalAddCollection(props: { toggleModalAdd: () => void }) {
 
   const colNames: string[] = collectionContext
     ? collectionContext?.collections.map((col) => col.name)
-    : []
-
-  const colSlugs: string[] = collectionContext
-    ? collectionContext.collections.map((col) => col.slug)
     : []
 
   return (

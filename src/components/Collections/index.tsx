@@ -226,27 +226,29 @@ function Collections() {
           <EmptyState>No collections</EmptyState>
         )}
         <CollectionList>
-          {collectionContext?.collections.map((collection) => (
-            <CollItem
-              onClick={() => goToCollectionDetail(collection)}
-              key={collection.name}
-            >
-              <Image
-                src={getImage(collection)}
-                loading="lazy"
-                alt={collection.name}
-              />
-              <Info>
-                <Title>
-                  {collection.name} ({collection.list.length})
-                </Title>
-                <Actionables>
-                  <EditButton onClick={() => onClickPencil(collection)} />
-                  <RemoveButton onClick={() => onClickTrashcan(collection)} />
-                </Actionables>
-              </Info>
-            </CollItem>
-          ))}
+          {collectionContext?.collections
+            .sort((a, b) => (a.name < b.name ? -1 : 1))
+            .map((collection) => (
+              <CollItem
+                onClick={() => goToCollectionDetail(collection)}
+                key={collection.name}
+              >
+                <Image
+                  src={getImage(collection)}
+                  loading="lazy"
+                  alt={collection.name}
+                />
+                <Info>
+                  <Title>
+                    {collection.name} ({collection.list.length})
+                  </Title>
+                  <Actionables>
+                    <EditButton onClick={() => onClickPencil(collection)} />
+                    <RemoveButton onClick={() => onClickTrashcan(collection)} />
+                  </Actionables>
+                </Info>
+              </CollItem>
+            ))}
         </CollectionList>
       </Content>
     </Container>
