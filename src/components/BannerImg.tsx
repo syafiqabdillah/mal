@@ -46,7 +46,11 @@ const Title = styled.h1`
 function BannerImg(props: BannerImgType) {
   return (
     <Container>
-      <BannerImage src={props.src} alt={props.alt ? props.alt : ''} />
+      <BannerImage
+        loading="lazy"
+        src={props.src}
+        alt={props.alt ? props.alt : ''}
+      />
       {props.text && <Title>{props.text}</Title>}
     </Container>
   )

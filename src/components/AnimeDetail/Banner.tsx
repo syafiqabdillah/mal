@@ -13,7 +13,7 @@ const Img = styled.img`
 `
 
 function Banner(props: BannerType) {
-  return <Img src={props.src} alt={props.alt} />
+  return <Img loading="lazy" src={props.src} alt={props.alt} />
 }
 
 export default Banner

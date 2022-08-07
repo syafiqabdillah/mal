@@ -11,6 +11,7 @@ import Search from './Search'
 
 import BannerImg from '../BannerImg'
 import Content from '../Content'
+import Loading from '../Loading'
 
 import { GET_MEDIA } from '../../GraphQL/queries'
 
@@ -28,6 +29,7 @@ const HomeContent = styled(Content)`
   flex-direction: column;
   align-items: center;
   position: relative;
+  max-width: var(--max-w-desktop);
 `
 
 function Home() {
@@ -79,7 +81,7 @@ function Home() {
       )}
       <HomeContent>
         {loadingList || !list || !pageInfo ? (
-          <div>Loading...</div>
+          <Loading />
         ) : (
           <React.Fragment>
             <Search />

@@ -4,6 +4,18 @@ export type Anime = {
   bannerImage: string
   description: string
   genres: string[]
+  season?: string
+  seasonYear?: number
+  averageScore: number
+  episodes?: number
+  duration?: number
+  status?: string
+  hastag?: string[]
+  trailer?: {
+    id: number
+    site: string
+    thumbnail: string
+  }
   coverImage: {
     medium: string
     large: string
@@ -14,5 +26,11 @@ export type Anime = {
     romaji?: string
     native?: string
   }
-  averageScore: number
+  rankings?: {
+    id: number
+    type: string
+    rank: number
+    format: string
+    allTime: boolean
+  }
 }

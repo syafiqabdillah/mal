@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
-import React, { useContext, useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useContext, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { FaTrashAlt } from 'react-icons/fa'
 
 import AnimeContext from '../../context/AnimeContext'
@@ -118,7 +118,6 @@ function getGenre(anime: Anime): string[] {
 
 function AnimeCard(props: AnimeCardTypes) {
   const animeContext = useContext(AnimeContext)
-  const { slug } = useParams()
 
   const [showCheck, setShowCheck] = useState(false)
   const [showRemove, setShowRemove] = useState(false)
@@ -167,8 +166,7 @@ function AnimeCard(props: AnimeCardTypes) {
       <Image
         src={getImage(props.anime)}
         alt={getTitle(props.anime)}
-        height="30"
-        width="30"
+        loading="lazy"
       />
       <Info>
         <Title>{getTitle(props.anime)}</Title>

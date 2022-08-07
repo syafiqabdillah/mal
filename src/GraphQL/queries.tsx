@@ -36,6 +36,18 @@ export const GET_MEDIA_DETAIL = gql`
       bannerImage
       description
       genres
+      season
+      seasonYear
+      averageScore
+      episodes
+      duration
+      status
+      hashtag
+      trailer {
+        id
+        site
+        thumbnail
+      }
       coverImage {
         medium
         large
@@ -46,7 +58,13 @@ export const GET_MEDIA_DETAIL = gql`
         romaji
         native
       }
-      averageScore
+      rankings {
+        id
+        type
+        rank
+        format
+        allTime
+      }
     }
   }
 `

@@ -8,6 +8,7 @@ import { useSnackbar } from 'react-simple-snackbar'
 
 import Banner from './Banner'
 import Button from '../Button'
+import Loading from '../Loading'
 
 import { getTitle } from '../../utils/anime'
 
@@ -61,12 +62,39 @@ const Title = styled.h1`
   margin: 0;
 `
 
+const Genres = styled.div`
+  margin-top: 15px;
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  font-size: 12px;
+`
+
+const Genre = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25em 1em;
+  border-radius: 4px;
+  background-color: var(--bg-grey);
+  color: var(--bg-light);
+`
+
+const DetailInfo = styled.p`
+  margin: 0;
+  font-size: 12px;
+  margin-top: 15px;
+  font-style: italic;
+`
+
 const Description = styled.p`
   line-height: 1.6;
-  margin: 20px 0;
+  margin: 15px 0;
+  font-size: 14px;
 `
 
 const CollectionInfo = styled.p`
+  font-size: 14px;
   margin: 0;
   font-style: italic;
 `
@@ -85,39 +113,8 @@ function AnimeDetail() {
   const animeContext = useContext(AnimeContext)
   const collectionContext = useContext(CollectionContext)
   const [openSnackbar] = useSnackbar()
-
   const [anime, setAnime] = useState<Anime>()
   const [loadingAnime, setLoadingAnime] = useState(true)
-
-  const { loading, error, data } = useQuery(GET_MEDIA_DETAIL, {
-    variables: {
-      idMal: id,
-    },
-  })
-
-  useEffect(() => {
-    if (error) {
-      openSnackbar('Error fetching anime. Redirecting to Home.')
-      setTimeout(() => {
-        window.location.href = '/'
-      }, 2000)
-    }
-  }, [error])
-
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-
-  useEffect(() => {
-    if (data) {
-      setAnime(data.Media)
-      setLoadingAnime(false)
-    }
-  }, [data, loading, error])
-
-  if (loadingAnime || !anime) {
-    return <div>Loading...</div>
-  }
 
   function getBannerImage() {
     if (!anime) return ''
@@ -145,6 +142,40 @@ function AnimeDetail() {
     return cols
   }
 
+  const { loading, error, data, refetch } = useQuery(GET_MEDIA_DETAIL, {
+    variables: {
+      idMal: id,
+    },
+  })
+
+  useEffect(() => {
+    if (error) {
+      openSnackbar('Error fetching anime. Redirecting to Home.')
+      setTimeout(() => {
+        window.location.href = '/'
+      }, 2000)
+    }
+  }, [error])
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    // refetch after 2s no response
+    setTimeout(() => {
+      if (!anime) refetch()
+    }, 2000)
+  }, [])
+
+  useEffect(() => {
+    if (data) {
+      setAnime(data.Media)
+      setLoadingAnime(false)
+    }
+  }, [data, loading, error])
+
+  if (loadingAnime || !anime) {
+    return <Loading />
+  }
+
   return (
     <Container>
       <Helmet>
@@ -157,6 +188,17 @@ function AnimeDetail() {
           <FaChevronLeft /> back
         </Back>
         <Title>{anime.title.english}</Title>
+        <Genres>
+          {anime.genres.map((genre) => (
+            <Genre key={genre}>{genre}</Genre>
+          ))}
+        </Genres>
+        <DetailInfo>
+          Episodes: {anime.episodes ? anime.episodes : 'ongoing'}
+        </DetailInfo>
+        <DetailInfo>Avg Duration: {anime.duration} minutes</DetailInfo>
+        <DetailInfo>Status: {anime.status}</DetailInfo>
+        <DetailInfo>Avg Score: {anime.averageScore}/100</DetailInfo>
         <Description
           dangerouslySetInnerHTML={{ __html: anime.description }}
         ></Description>

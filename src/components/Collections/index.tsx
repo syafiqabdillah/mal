@@ -101,7 +101,7 @@ const EmptyState = styled.div`
 
 function getImage(col: Collection) {
   let image = '/images/yurucamp.jpg'
-  if (col.list.length == 0) return image
+  if (col.list.length === 0) return image
   for (let i = 0; i < col.list.length; i++) {
     if (col.list[i].coverImage.large) {
       image = col.list[i].coverImage.large
@@ -157,7 +157,6 @@ function Collections() {
 
   const [showModalAdd, setShowModalAdd] = useState(false)
   const [showModalRemove, setShowModalRemove] = useState(false)
-  const [showModalEdit, setShowModalEdit] = useState(false)
   const [bannerImage, setBannerImage] = useState('/images/yurucamp.jpg')
 
   const [toBeRemovedCollection, setToBeRemovedCollection] =
@@ -169,10 +168,6 @@ function Collections() {
 
   function toggleModalRemove() {
     setShowModalRemove((prev) => !prev)
-  }
-
-  function toggleModalEdit() {
-    setShowModalEdit((prev) => !prev)
   }
 
   function onClickTrashcan(col: Collection) {
@@ -236,7 +231,11 @@ function Collections() {
               onClick={() => goToCollectionDetail(collection)}
               key={collection.name}
             >
-              <Image src={getImage(collection)} alt={collection.name} />
+              <Image
+                src={getImage(collection)}
+                loading="lazy"
+                alt={collection.name}
+              />
               <Info>
                 <Title>
                   {collection.name} ({collection.list.length})
